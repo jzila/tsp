@@ -6,6 +6,11 @@ programming exercise and to get familiar with python Flask apps.
 
 ## Running
 
+Requires Flask:
+```bash
+$ pip install flask
+```
+
 To run the server:
 ```bash
 $ python server.py
