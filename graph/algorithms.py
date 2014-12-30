@@ -3,6 +3,12 @@ import math
 from graph.structs import GraphError, Edge
 
 
+def dedupe_points(f):
+    def wrapper(points):
+        return f(list(set(points)))
+    return wrapper
+
+@dedupe_points
 def hull_from_points(points):
     # Pick the first point
     if len(points) < 3:
@@ -41,6 +47,7 @@ def hull_from_points(points):
     return edges
 
 
+@dedupe_points
 def tsp_from_points(points):
     edges = set(hull_from_points(points))
 
