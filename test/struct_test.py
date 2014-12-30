@@ -91,9 +91,9 @@ class VectorTest(unittest.TestCase):
         c = Vector(-1, 0)
 
         angle = a.angle(b)
-        self.assertAlmostEqual(angle, math.pi/2)
-        angle = b.angle(a)
         self.assertAlmostEqual(angle, -math.pi/2)
+        angle = b.angle(a)
+        self.assertAlmostEqual(angle, math.pi/2)
         angle = b.angle(c)
         self.assertAlmostEqual(angle, math.pi)
         angle = c.angle(b)
