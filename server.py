@@ -1,3 +1,4 @@
+import os
 from flask import  Flask, request, make_response, Response, send_from_directory
 from graph.algorithms import hull_from_points, tsp_from_points
 from graph.structs import Point, StructEncoder, GraphError
@@ -36,4 +37,5 @@ def tsp():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = os.environ.get('PORT', 5000)
+    app.run(port=port)
