@@ -2,8 +2,6 @@ from heapq import heapify, heappop, heappush
 import math
 from graph.structs import GraphError, Edge
 
-__author__ = 'john'
-
 
 def hull_from_points(points):
     # Pick the first point
@@ -44,35 +42,27 @@ def hull_from_points(points):
 
 
 def tsp_from_points(points):
-    edge_set = set(hull_from_points(points))
+    edges = set(hull_from_points(points))
 
     # Clear points currently on edges
-    used_points = set()
-    for e in edge_set:
-        used_points.add(e.p)
-
-    unused_points = set()
-    for p in points:
-        if not p in used_points:
-            unused_points.add(p)
+    used_points = {e.p for e in edges}
+    unused_points = {p for p in points if not p in used_points}
 
     # Basic algorithm:
     # 1) For every edge, introduce a new point from the set of non-edged points.
-    # 2) Pick the point that increases the size of the path by the least.
-    # 3) Pick the edge that increases the size of the path by the least.
+    # 2) Pick the edge-point reroute that increases the size of the path by the least.
     while unused_points:
         deltas = []
-        for e in edge_set:
+        for e in edges:
             for p in unused_points:
-                target = e.endP()
                 e1 = Edge(e.p, p)
-                e2 = Edge(p, target)
+                e2 = Edge(p, e.endP())
                 delta = e1.mag() + e2.mag() - e.mag()
                 heappush(deltas, (delta, {'old': e, 'new': (e1, e2)}))
 
         (delta, o) = heappop(deltas)
-        edge_set.remove(o['old'])
-        edge_set.update(set(o['new']))
+        edges.remove(o['old'])
+        edges.update(set(o['new']))
         unused_points.remove(o['new'][1].p)
 
-    return list(edge_set)
+    return list(edges)
