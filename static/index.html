@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		points = [];
+		edges = [];
+
+		function drawPoints() {
+			var canvas = $('canvas.graph')[0];
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+				ctx.strokeStyle = '#000000';
+
+				for (var i=0; i<points.length; i++) {
+					p = points[i];
+					ctx.beginPath();
+					ctx.arc(p[0], p[1], 5, 0, 2*Math.PI);
+					ctx.stroke();
+				}
+			}
+		}
+
+		function drawEdges() {
+			var canvas = $('canvas.graph')[0];
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.strokeStyle = '#0000bb';
+
+				ctx.beginPath();
+				for (var i=0; i<edges.length; i++) {
+					e = edges[i];
+					p = e.p;
+					v = e.v;
+					p2 = {x: p.x + v.x, y: p.y + v.y};
+					ctx.moveTo(p.x, p.y);
+					ctx.lineTo(p2.x, p2.y);
+					ctx.stroke();
+				}
+			}
+		}
+
+		$(document).ready(function() {
+			$('canvas').click(function(ev) {
+				var totalOffsetX = 0;
+				var totalOffsetY = 0;
+				var currentElement = this;
+
+				do{
+					totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+					totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+				}
+				while(currentElement = currentElement.offsetParent);
+
+				var canvasX = ev.pageX - totalOffsetX;
+				var canvasY = ev.pageY - totalOffsetY;
+
+				points.push([canvasX, canvasY]);
+
+				drawPoints();
+				$.ajax({
+					type: 'POST',
+					url: "/tsp/",
+					data: JSON.stringify(points),
+					success: function(data) {
+						edges = data;
+						drawEdges();
+					},
+					contentType: 'application/json',
+					dataType: 'json'
+				});
+			});
+		});
+	</script>
+	<style type="text/css">
+		canvas { border: 1px solid black; }
+	</style>
+</head>
+<body>
+	<canvas class="graph" width="800" height="500"></canvas>
+</body>
+</html>
