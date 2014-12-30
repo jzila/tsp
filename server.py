@@ -1,7 +1,7 @@
 import os
-from flask import  Flask, request, make_response, Response, send_from_directory
+from flask import  Flask, request, Response
 from graph.algorithms import hull_from_points, tsp_from_points
-from graph.structs import Point, StructEncoder, GraphError
+from graph.structs import Point, StructEncoder
 
 import json
 
