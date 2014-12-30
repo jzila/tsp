@@ -37,6 +37,6 @@ def tsp():
 
 
 if __name__ == '__main__':
-    port = os.environ.get('PORT', 5000)
+    port = int(os.environ.get('PORT', 5000))
     print "Running on port: %s" % port
     app.run(port=port)
