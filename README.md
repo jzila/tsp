@@ -1,7 +1,13 @@
 ## Synopsis
 
-Simple convex hull and traveling salesman problem "solver". Just written as a
-programming exercise and to get familiar with python Flask apps.
+Simple convex hull and traveling salesman problem (TSP) "solver". Just written
+as a programming exercise and to get familiar with python Flask apps.
+
+Please note that the TSP solution is not optimal. I was testing out a
+hypothesis that calculating a convex hull could help direct a TSP solver that
+is close to optimal. That said, sometimes you will see crossed lines, and
+situations where you could obviously improve the path. There are a few changes
+I can think of where I could sacrifice more runtime for better accuracy.
 
 
 ## Running
